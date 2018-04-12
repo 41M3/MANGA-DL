@@ -32,19 +32,19 @@ yes_no () {
 }
 
 clear
-echo -e "\e[1m\e[101m  You are not welcome on this uninstall script made by 41M3!  \e[0m"
+echo -e "\e[1m\e[101m Welcome on this installation script made by 41M3!  \e[0m"
 sleep 1s
 if [[ $EUID -ne 0 ]]; then
    echo "This script must be run as root" 1>&2
    exit 0
 fi
-yes_no "Start INSTALLATION of manga-dl [Y/N] ?"
+yes_no "Start INSTALLATION of manga-dl ?"
 if [ $CHOICE = 0 ]; then
     echo "Installation aborted..."
     exit
 fi
-cp src/manga-dl.1 /usr/share/man/man1/manga-dl2.1
 cp src/manga-dl2 /usr/bin/manga-dl2
+#cp src/manga-dl.1 /usr/share/man/man1/manga-dl.1
 echo -e "\e[1m\e[101m      INSTALLATION ENDED !      \e[0m"
 sleep 5
 exit 0

@@ -38,7 +38,7 @@ yes_no () {
     done
 }
 
-yes_no "UPGRADING manga-dl [Y/N] ?"
+yes_no "UPGRADING manga-dl ?"
 if [ $CHOICE = 0 ]; then
     echo "Upgrade aborted"
     exit

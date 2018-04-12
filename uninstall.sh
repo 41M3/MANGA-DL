@@ -38,13 +38,13 @@ if [[ $EUID -ne 0 ]]; then
    echo "This script must be run as root" 1>&2
    exit 0
 fi
-yes_no "Start UNINSTALLATION of manga-dl [Y/N] ?"
+yes_no "Start UNINSTALLATION of manga-dl ?"
 if [ $CHOICE = 0 ]; then
     echo "Uninstallation aborted, WELL!!!"
     exit
 fi
 rm /usr/bin/manga-dl*
-rm /usr/share/man/man1/manga-dl*
+#rm /usr/share/man/man1/manga-dl*
 echo -e "\e[1m\e[101m     UNINSTALLATION ENDED !      \e[0m"
 sleep 5s
 exit 0

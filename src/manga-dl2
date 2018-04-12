@@ -36,8 +36,7 @@ function for_help {
     exit 0
 }
 
-if [[ $1 == "-h" || $1 == "--help" ]];
-then
+if [[ $1 == "-h" || $1 == "--help" ]]; then
     for_help
 fi
 
@@ -51,8 +50,7 @@ read -p "Compression's name [DR_STONE] or [Y-Gto] : " namec
 count=0
 
 ###ARGS ARE INTEGERS###
-if [[ $site != +([1-3]) || $first != +([0-9]) || $last != +([0-9]) || $pages != +([0-9]) ]];
-then
+if [[ $site != +([1-3]) || $first != +([0-9]) || $last != +([0-9]) || $pages != +([0-9]) ]]; then
     echo "Bad Type Of Args!"
     for_help
 fi
@@ -71,14 +69,11 @@ do
     do
 
 ###PROPOTYPE LIEN###
-	if [[ $site == 1 ]];
-	then
+	if [[ $site == 1 ]]; then
 	   wget -nd -H -p -A jpg,jpeg,png -e robots=off http://www.japscan.cc/lecture-en-ligne/$name$j/$i.html &> /dev/null
-	elif [[ $site == 2 ]];
-	then
+	elif [[ $site == 2 ]]; then
 	    wget -nd -H -p -A jpg,jpeg,png -e robots=off http://ww2.scan-vf.com/$name/chapitre-$j/$i &> /dev/null
-	elif [[ $site == 3 ]];
-	then
+	elif [[ $site == 3 ]]; then
 	    wget -nd -H -p -A jpg,jpeg,png -e robots=off http://www.scan-fr.io/manga/$name/$j/$i &> /dev/null
 	else
 	    wget -nd -H -p -A jpg,jpeg,png -e robots=off http://www.japscan.cc/lecture-en-ligne/$name$j/$i.html &> /dev/null
@@ -87,8 +82,7 @@ do
     cd ..
     zip -r $namec$j.cbz $j $> /dev/null
     rm -rf $j
-    if [[ $first != 1 ]];
-    then
+    if [[ $first != 1 ]]; then
 	((count++))
 	echo -e "\e[1m\e[44m Finished file $count/$((last-first+1)) : $((count*100/(last-first+1)))% \e[0m"
     else
