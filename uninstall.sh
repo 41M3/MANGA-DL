@@ -34,12 +34,12 @@ yes_no () {
 clear
 echo -e "\e[1m\e[101m  You are not welcome on this uninstall script made by 41M3!  \e[0m"
 sleep 3s
-if [[ $EUID -ne 0 ]]; then
-   echo "This script must be run as root" 1>&2
-   exit 0
-fi
 yes_no "Start UNINSTALLATION of manga-dl ?"
 if [ $CHOICE = 0 ]; then
+    if [ $EUID -ne 0 ]; then
+	echo "This script must be run as root" 1>&2
+	exit 0
+    fi
     echo "Uninstallation aborted, WELL!!!"
     exit
 fi

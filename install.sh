@@ -36,7 +36,7 @@ echo -e "\e[1m\e[101m Welcome on this installation script made by 41M3!  \e[0m"
 sleep 1s
 yes_no "Start INSTALLATION of manga-dl ?"
 if [ $CHOICE = 0 ]; then
-    if [[ $EUID -ne 0 ]]; then
+    if [ $EUID -ne 0 ]; then
 	echo "This script must be run as root" 1>&2
 	exit 0
     fi
@@ -46,7 +46,6 @@ fi
 chmod +x src/manga-dl2
 cp src/manga-dl2 /usr/bin/manga-dl2
 #cp src/manga-dl.1 /usr/share/man/man1/manga-dl.1
-sleep 3
 echo -e "\e[1m\e[101m      INSTALLATION ENDED !      \e[0m"
 sleep 5
 exit 0

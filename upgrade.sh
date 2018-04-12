@@ -11,7 +11,7 @@
 clear
 echo -e "\033[1m\033[44m MANGA-DL upgrader \033[0m\\n"
 sleep 1s
-if [[ $EUID -ne 0 ]]; then
+if [ $EUID -ne 0 ]; then
    echo "This script must be run as root" 1>&2
    exit 0
 fi
@@ -45,7 +45,8 @@ if [ $CHOICE = 0 ]; then
 fi
 
 #Install
-cp src/manga-dl.1 /usr/share/man/man1/manga-dl2.1
+#cp src/manga-dl.1 /usr/share/man/man1/manga-dl2.1
+chmod +x /src/manga-dl2
 cp src/manga-dl2 /usr/bin/manga-dl2
 echo -e "\e[1m\e[101m      INSTALLATION ENDED !      \e[0m"
 sleep 5
