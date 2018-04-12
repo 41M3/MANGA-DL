@@ -8,6 +8,11 @@
 #notes           :
 #bash_version    :4.4.19
 #==============================================================================
+clear
+if [[ $EUID -ne 0 ]]; then
+    echo "This script must be run as root" 1>&2
+    exit 0
+fi
 
 CHOICE=-1
 
@@ -31,20 +36,15 @@ yes_no () {
     done
 }
 
-clear
 echo -e "\e[1m\e[101m  You are not welcome on this uninstall script made by 41M3!  \e[0m"
-sleep 3s
+sleep 2s
 yes_no "Start UNINSTALLATION of manga-dl ?"
-if [ $CHOICE = 0 ]; then
-    if [ $EUID -ne 0 ]; then
-	echo "This script must be run as root" 1>&2
-	exit 0
-    fi
+if [[ $CHOICE = 0 ]]; then
     echo "Uninstallation aborted, WELL!!!"
     exit
 fi
 rm /usr/bin/manga-dl*
 #rm /usr/share/man/man1/manga-dl*
-echo -e "\e[1m\e[101m     UNINSTALLATION ENDED !      \e[0m"
-sleep 5s
+echo -e "\e[1m\e[101m     Finished uniinstallation :( !      \e[0m"
+sleep 1s
 exit 0

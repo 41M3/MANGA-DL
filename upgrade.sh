@@ -9,12 +9,12 @@
 #bash_version    :4.4.19
 #==============================================================================
 clear
+if [[ $EUID -ne 0 ]]; then
+    echo "This script must be run as root" 1>&2
+    exit 0
+fi
 echo -e "\033[1m\033[44m MANGA-DL upgrader \033[0m\\n"
 sleep 1s
-if [ $EUID -ne 0 ]; then
-   echo "This script must be run as root" 1>&2
-   exit 0
-fi
 
 CHOICE=-1
 
@@ -39,7 +39,7 @@ yes_no () {
 }
 
 yes_no "UPGRADING manga-dl ?"
-if [ $CHOICE = 0 ]; then
+if [[ $CHOICE = 0 ]]; then
     echo "Upgrade aborted"
     exit
 fi
@@ -48,6 +48,6 @@ fi
 #cp src/manga-dl.1 /usr/share/man/man1/manga-dl2.1
 chmod +x /src/manga-dl2
 cp src/manga-dl2 /usr/bin/manga-dl2
-echo -e "\e[1m\e[101m      INSTALLATION ENDED !      \e[0m"
-sleep 5
+echo -e "\e[1m\e[101m      Finished upgrade !      \e[0m"
+sleep 1s
 exit 0
