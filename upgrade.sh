@@ -45,7 +45,7 @@ if [[ $CHOICE = 0 ]]; then
 fi
 
 #Install
-#cp src/manga-dl.1 /usr/share/man/man1/manga-dl2.1
+cp src/manga-dl.1 /usr/share/man/man1/manga-dl2.1
 chmod +x /src/manga-dl2
 cp src/manga-dl2 /usr/bin/manga-dl2
 echo -e "\e[1m\e[101m      Finished upgrade !      \e[0m"

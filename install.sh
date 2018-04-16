@@ -45,7 +45,7 @@ if [[ $CHOICE = 0 ]]; then
 fi
 chmod +x src/manga-dl2
 cp src/manga-dl2 /usr/bin/manga-dl2
-#cp src/manga-dl.1 /usr/share/man/man1/manga-dl.1
+cp src/manga-dl.1 /usr/share/man/man1/manga-dl.1
 echo -e "\e[1m\e[101m      Finihed installation !      \e[0m"
 sleep 1s
 exit 0

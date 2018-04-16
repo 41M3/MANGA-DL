@@ -44,7 +44,7 @@ if [[ $CHOICE = 0 ]]; then
     exit
 fi
 rm /usr/bin/manga-dl*
-#rm /usr/share/man/man1/manga-dl*
+rm /usr/share/man/man1/manga-dl*
 echo -e "\e[1m\e[101m     Finished uniinstallation :( !      \e[0m"
 sleep 1s
 exit 0
