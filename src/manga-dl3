@@ -1,0 +1,253 @@
+#!/bin/bash
+#title          :manga-dl3
+#description    :download  manga
+#author         :41M3
+#start date     :26 APR. 2020
+#version        :3
+#usage          :./manga-dl3
+#notes          :check the MANGAS'S SITE link for args
+#bash_version   :4.4.19
+#==============================================================================
+
+clear
+
+###HELP###
+for_help () {
+  echo "======================================================================================="
+  echo "              Manga downloader for Manga web sites"
+  echo ""
+  echo " USAGE: 'manga-dl3 [1 -h/--help -s -d] [--nocolor]' "
+  echo "         :          Multi chaps/volumes"
+  echo "       1 :          Only one chap/volume"
+  echo "      -s :          Change settings"
+  echo "      -d :          Delete previous settings"
+  echo "      -h/--help :   Display this help"
+  echo ""
+  echo "      --nocolor :   Download colored chap/volume in grey-scale"
+  echo ""
+  echo "      REQUIRED:"
+  echo "      ++> The \"Read Manga Online\" web site"
+  echo "      ++> The manga's name in the site's URL"
+  echo "      ++> The number of the first chapter/volume that you want"
+  echo "      ++> The number of the last chapter/volume that you want"
+  echo "      ++> The number of pages in the chapter/volume"
+  echo "      ++> The name that you want for the compressed CBZ file"
+  echo ""
+  echo "      SETTINGS:"
+               cat ./.setmangadll
+  echo "======================================================================================="
+  exit 0
+}
+
+CHOICE=-1
+NOCOLOR=0
+DIR="$HOME/.bin/"
+
+yes_no () {
+    local CHOSEN='0'
+    local ANSWER
+    while [[ "${CHOSEN}" = '0' ]]
+    do
+        read -p "$1 [Y/N]" -n1 ANSWER
+        echo ''
+        case ${ANSWER} in
+            y | Y ) CHOICE=1 CHOSEN='1';;
+            n | N ) CHOICE=0 CHOSEN='1';;
+            *) echo 'Invalid answer, try again.';;
+        esac
+    done
+}
+
+end () {
+  lh_time=$(($(date +%H)-fh_time))
+  lm_time=$(($(date +%M)-fm_time))
+  ls_time=$(($(date +%S)-fs_time))
+  echo -e "\e[1m\e[101m      END !      \e[0m"
+  echo "==================================================================="
+  echo -e ""
+  echo -e "                ${name} Downloading ended"
+  echo -e ""
+  echo -e "             Start : $fh_time:$fm_time:$fs_time  _  End : $(date +%H):$(date +%M):$(date +%S)"
+  echo -e "        Time elapsed : $lh_time hours, $lm_time minutes, $ls_time seconds"
+  echo "==================================================================="
+
+  exit 0
+}
+
+setVar () {
+  if [[ -e ./.setmangadll ]]; then
+    source ./.setmangadll
+    echo "Settings:\
+    [Site selection nb: ${VARSITE}]\
+    [Manga name: ${VARNAME}]\
+    [Nb of pages by chap: ${VARPAGES}]
+    [CBZ file name: ${VARFILECBZ}]"
+  fi
+  touch ./.setmangadll
+
+  read -p "Site for downloading: [1 : lecture-enligne.com]  [2 : scan-op.com]  [3 : lelscan-vf.com]  [4 : scan-vf.net]  [5 : scan-fr.co]
+==> " site
+  echo "VARSITE=\"${site}\"" > ./.setmangadll
+  yes_no "Change Manga's name ?"
+    if [[ ${CHOICE} = 0 ]]; then
+        echo "VARNAME=\"${VARNAME}\"" >> ./.setmangadll;
+        name=${VARNAME}
+     elif [ ${CHOICE} = 1 ]; then
+        read -p "Manga's name [dr-stone/], [grand-blue] or [one-piece] :
+==> " name
+        echo "VARNAME=\"${name}\"" >> ./.setmangadll
+    fi
+  read -p "Value for pages nbr :
+==> " pages
+  echo "VARPAGES=\"${pages}\"" >> ./.setmangadll
+  yes_no "Set Name for CBZ file ?"
+    if [[ ${CHOICE} = 0 ]]; then
+        echo "VARFILECBZ=\"${name}\"" >> ./.setmangadll
+     elif [[ ${CHOICE} = 1 ]]; then
+        read -p "name for CBZ file ?\
+==> " namecbz
+        echo "VARFILECBZ=\"${namecbz}\"" >> ./.setmangadll
+    fi
+}
+
+initVar () {
+  if [[ -e ./.setmangadll ]]; then
+    source ./.setmangadll
+    site=${VARSITE}
+    name=${VARNAME}
+    pages=${VARPAGES}
+    namecbz=${VARFILECBZ}
+  else
+    setVar
+  fi
+}
+
+delVar () {
+  yes_no "Delete settings file ?"
+  if [[ ${CHOICE} = 0 ]]; then
+    clear
+    exit 0
+  fi
+  clear
+  rm ./.setmangadll
+}
+
+onlyOne () {
+  fh_time=$(date +%H)
+  fm_time=$(date +%M)
+  fs_time=$(date +%S)
+
+  initVar
+
+  read -p "Value for chapter/volume : " nb
+
+  mkdir ${nb}
+  if [[ ${NOCOLOR} = 1 ]]; then
+    cp $DIR/color/changecolor ${nb}
+  fi
+  cd ${nb}
+
+  for i in `seq 0 ${pages}`;
+  do
+    case ${site} in
+      1) wget -nd -H -p -A jpg,jpeg,png -e robots=off "https://lecture-enligne.com/scan-${name}-lecture-en-ligne/${nb}/${i}" &> /dev/null ;;
+      2) wget -nd -H -p -A jpg,jpeg,png -e robots=off "https://scan-op.com/manga/${name}/${nb}/${i}" &> /dev/null ;;
+      3) wget -nd -H -p -A jpg,jpeg,png -e robots=off "https://www.lelscan-vf.com/manga/${name}/${nb}/${i}" &> /dev/null ;;
+      4) wget -nd -H -p -A jpg,jpeg,png -e robots=off "http://www.scan-vf.net/${name}/chapitre-${nb}/${i}" &> /dev/null ;;
+      5) wget -nd -H -p -A jpg,jpeg,png -e robots=off "http://www.scan-fr.co/manga/${name}/${nb}/${i}" &> /dev/null ;;
+      esac
+  done
+
+   if [[ ${NOCOLOR} = 1 ]]; then
+    ./changecolor 1 $((${pages} + 2))
+    rm changecolor
+   fi
+
+  cd ..
+  zip -r ${namecbz}${nb}.cbz ${nb} $> /dev/null
+  rm -rf ${nb}
+  end
+}
+
+multiRun () {
+  fh_time=$(date +%H)
+  fm_time=$(date +%M)
+  fs_time=$(date +%S)
+  initVar
+  ###VALUES###
+  read -p "Value for first chapter/volume : " first
+  read -p "Value for last chapter/volume : " last
+  count=0
+
+  ###ARGS ARE INTEGERS###
+  case ${site} in
+    1 | 2 | 3 | 4) check=0 ;;
+    *) check=1 ;;
+  esac
+
+  if [[ ${check} != 0 ]]; then
+    echo "Bad type of Args!"
+    for_help
+  fi
+
+  #if [ "$site" != +([1-3]) ] | [ "$first" != +([0-9]) ] | [ "$last" != +([0-9]) ] | [ "$pages" != +([0-9]) ]; then
+  #    echo "Bad Type Of Args!"
+  #    for_help
+  #fi
+
+  ###WORK CHAPTER/VOLUME###
+  for j in `seq ${first} ${last}`;
+  do
+      mkdir ${j}
+      if [[ ${NOCOLOR} = 1 ]]; then
+        cp $DIR/color/changecolor ${j}
+      fi
+      cd ${j}
+
+  ###WORK PAGES###
+      for i in `seq 0 ${pages}`;
+      do
+
+  ###PROPOTYPE LIEN###
+      case ${site} in
+
+        1) wget -nd -H -p -A jpg,jpeg,png -e robots=off "https://lecture-enligne.com/scan-${name}-lecture-en-ligne/${j}/${i}" &> /dev/null ;;
+        2) wget -nd -H -p -A jpg,jpeg,png -e robots=off "https://scan-op.com/manga/${name}/${j}/${i}" &> /dev/null ;;
+        3) wget -nd -H -p -A jpg,jpeg,png -e robots=off "https://www.lelscan-vf.com/manga/${name}/${j}/${i}" &> /dev/null ;;
+        4) wget -nd -H -p -A jpg,jpeg,png -e robots=off "http://www.scan-vf.net/${name}/chapitre-${j}/${i}" &> /dev/null ;;
+        5) wget -nd -H -p -A jpg,jpeg,png -e robots=off "http://www.scan-fr.co/manga/${name}/${j}/${i}" &> /dev/null ;;
+      esac
+      done
+
+    if [[ ${NOCOLOR} = 1 ]]; then
+        ./changecolor 1 $((${pages} + 2))
+        rm changecolor
+    fi
+
+      cd ..
+      zip -r ${namecbz}${j}.cbz ${j} $> /dev/null
+      rm -rf ${j}
+      if [[ ${first} != 1 ]]; then
+  	  ((count++))
+  	  echo -e "\e[1m\e[44m [${name}] Finished file ${count}/$((last-first+1)) : $((count*100/(last-first+1)))% \e[0m"
+      else
+  	  echo -e "\e[1m\e[44m [${name}] Finished file ${j}/${last} : $((j*100/last))% \e[0m"
+      fi
+  done
+  end
+}
+
+#bite=0
+
+case $1 in
+  "-h" | "--help") for_help ;;
+  1)
+    case $2 in
+        "--nocolor") NOCOLOR=1 ;;
+    esac
+    onlyOne ;;
+  "-s" | "s") setVar ;;
+  "-d" | "d") delVar ;;
+  "--nocolor") NOCOLOR=1 multiRun ;;
+  *) multiRun
+esac
