@@ -6,7 +6,20 @@ manga downloader manga's online reader
 1) Ubuntu
 
 ## Usage :
-1) Download your manga in CBZ file
+
+- manga-dl3 [ 1 -h/--help -s -d ] [ --nocolor ]
+
+          :          Multi chaps/volumes
+          
+        1 :          Only one chap/volume
+        
+       -s :          Change settings
+       
+       -d :          Delete previous settings
+       
+       -h/--help :   Display help
+       
+       --nocolor :   Download colored chap/volume in grey-scale
 
 ## Installation :
 1) Download or clone the repo (big green button up here)
